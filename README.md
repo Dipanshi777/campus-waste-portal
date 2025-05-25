@@ -38,7 +38,8 @@ A web-based platform to visualize, report, and analyze waste bin distribution an
 
 ## 🚀 Deployment
 
-Live site: [https://your-username.github.io/dustbin-management-webapp](https://your-username.github.io/dustbin-management-webapp)  
+Live site: [https://your-username.github.io/dustbin-management-webapp](https://dipanshi777.github.io/campus-waste-portal/
+)  
 
 
 ---
