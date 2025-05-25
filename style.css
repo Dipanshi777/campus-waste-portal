@@ -1,0 +1,388 @@
+
+html {
+  scroll-behavior: smooth;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background-color: #f9f9f9;
+  position: sticky; /* <--- This line makes it sticky */
+  top: 0; /* Stick to the top of page */
+  z-index: 1000; /* Make sure it stays above other content */
+  
+}
+
+.left-text {
+  flex: 1;
+  font-size: 31px;
+  margin-left: 50px;
+  word-spacing: 5px;
+  
+}
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+
+.nav-links a {
+  color: black; /* Link color */
+  text-decoration: none; 
+   margin-right: 10px;
+}
+
+.nav-links a:hover {
+  color: #0a8d36; /* Darker color on hover */
+  color: #0a8d36; /* Darker color on hover */
+  outline: 2px dotted ;
+      outline-offset: 4px;
+      text-decoration: underline;
+}
+
+.admin-button {
+  padding: 10px 20px;
+  background-color:white;
+  color: black;
+  border-color: black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.admin-button:hover {
+  background-color: #45a049;
+  color: white;
+}
+
+
+.hero-section {
+  position: relative;
+  height: 100vh;
+  background: url('Screenshot_26-4-2025_111933_www.freepik.com.jpeg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;/* Center vertically */
+  justify-content: flex-start;
+ /* Align items to the LEFT horizontally */
+  color: white;
+  text-align: left; /* Text aligned to the left */
+  overflow: hidden;
+  padding-left: 80px; /* Space from left edge */
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 500px; /* Optional: limit text width */
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+   ;
+}
+
+.hero-content p {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+/* Scroll Down Arrow */
+.scroll-down {
+  position: absolute;
+  bottom: 175px;
+  left: 50%; /* Move to center horizontally */
+  transform: translateX(-50%); /* Exactly center the arrow */
+  z-index: 2;
+}
+
+  
+.scroll-down a {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: 2px solid white; /* White circle border */
+  border-radius: 50%; /* Makes it perfectly round */
+  text-align: center;
+  line-height: 60px; /* Center arrow vertically */
+  color: white;
+  font-size: 30px;
+  text-decoration: none;
+  animation: bounce 2s infinite;
+  transition: background-color 0.3s;
+}
+
+.scroll-down a:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(10px);
+  }
+  60% {
+    transform: translateY(5px);
+  }
+}
+
+/* Main Content */
+.content-section {
+  background: white;
+  padding: 60px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+.content-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px; /* Space between text and image */
+}
+
+/* Left text */
+.content-text {
+  flex: 1;
+}
+
+/* Right image */
+.content-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px; /* Optional: Rounded corners */
+}
+/* Container to hold all cards side by side */
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 30px;
+  padding: 60px;
+  background: #f5f5f5;
+}
+
+/* Individual card styles */
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 30px;
+  text-align: center;
+  flex: 1;
+  text-decoration: none;
+  color: black;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Hover effect on cards */
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* Card text styles */
+
+/* Card heading normal */
+.card h3 {
+  position: relative; /* Needed for pseudo element */
+  margin-top: 0;
+  font-size: 24px;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+/* Pseudo-element for underline */
+.card h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px; /* Little gap below text */
+  width: 0;
+  height: 2px;
+  background-color: green;
+  transition: width 0.3s ease;
+}
+
+/* Hover effect: change color and show underline */
+.card:hover h3 {
+  color: green;
+}
+
+.card:hover h3::after {
+  width: 100%; /* Animate underline expanding */
+}
+
+.card p {
+  font-size: 16px;
+  margin-top: 10px;
+}
+/* Card Image */
+.card-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* Small normal shadow */
+  transition: box-shadow 0.3s ease;
+}
+
+/* Light-up image on hover */
+.card:hover .card-img {
+  box-shadow: 0 0 20px 5px rgba(2, 7, 14, 0.5); /* Light blue glow */
+}
+
+/*making every feature mobile responsive*/
+
+
+/* Make navbar stack nicely on mobile */
+@media (max-width: 768px) {
+  
+  /* Navbar (para + links + button) */
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .left-text {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .right-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact-button {
+    margin-top: 10px;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-content: center; /* Center text horizontally */
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .hero-content p {
+    font-size: 18px;
+  }
+
+  /* About / Main content (text + image section) */
+  .content-row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .content-text, .content-image {
+    width: 100%;
+  }
+
+  .content-image img {
+    max-width: 80%;
+    margin-top: 20px;
+  }
+}
+
+/* Make cards stack vertically on small screens (mobile responsive)*/
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+    padding: 30px;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+/*tip section*/
+.tips-carousel {
+  padding: 40px 20px;
+  background-color:white;
+
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.carousel-box {
+  width: 700px;
+  max-width: 90%;
+  background-color:rgb(193, 225, 193);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  height: 220px;
+}
+
+.carousel-slide {
+  display: none;
+  animation: fade 0.5s ease-in-out;
+}
+
+.carousel-slide.active {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tip-text {
+  width: 60%;
+}
+
+.tip-image {
+  width: 35%;
+}
+
+.tip-image img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.arrow {
+  font-size: 24px;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.arrow:hover {
+  background-color: #2e7d32;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

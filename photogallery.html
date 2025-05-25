@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Photo Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 100px 20px 40px;
+      background-color: #f4f4f4;
+      margin: 0;
+    }
+
+    .dashboard-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgb(193, 225, 193);
+      color: black;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      font-size: 30px;
+      font-weight: bold;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-button {
+      padding: 6px 14px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: transparent;
+      border: 2px solid black;
+      color: black;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      margin-right: 40px;
+    }
+
+    .nav-button:hover {
+      background-color: rgb(86, 174, 87);
+      color: white;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+.gallery-item {
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
+}
+
+.gallery-item img {
+  width: 100%;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.caption {
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  background-color: #eefbe9;
+  color: #333;
+  border-top: 1px solid #cdeac0;
+}
+
+    
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-header">
+    <span>Photo Gallery</span>
+    <button class="nav-button" onclick="location.href='homepage.html'">Back to Home</button>
+  </div>
+
+  <h2>Gallery of Waste Management Activities</h2>
+
+  <div class="gallery">
+    <div class="gallery-item">
+      <img src="photo1.jpg" alt="Dustbin Installation">
+      <div class="caption">Distribution of Waste Diposal & Location of Dumping Site</div>
+    </div>
+    <div class="gallery-item">
+      <img src="photo2.jpg" alt="Cleanup Drive">
+      <div class="caption">Distribution of Waste Diposal & Location of Dumping Site</div>
+    </div>
+    <div class="gallery-item">
+      <img src="photo3.jpg" alt="Survey Activity">
+      <div class="caption">SSS Residential Colony wise Waste Collection Zones</div>
+    </div>
+    <div class="gallery-item">
+      <img src="photo4.jpg" alt="Awareness Campaign">
+      <div class="caption">Site picture-1</div>
+    </div>
+    <div class="gallery-item">
+      <img src="photo5.jpg" alt="Awareness Campaign">
+      <div class="caption">Site picture-2</div>
+    </div>
+    <div class="gallery-item">
+      <img src="photo6.jpg" alt="Awareness Campaign">
+      <div class="caption">Site picture-3</div>
+    </div>
+   
+    <!-- Add more gallery items here -->
+  </div>
+
+</body>
+</html>

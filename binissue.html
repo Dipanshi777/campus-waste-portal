@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Report Bin Issue</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 100px 20px 20px; /* extra top padding for fixed header */
+    }
+
+    .dashboard-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgb(193, 225, 193);
+      color: black;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      font-size: 30px;
+      font-weight: bold;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-button {
+      padding: 6px 14px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: transparent;
+      border: 2px solid black;
+      color: black;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      margin-right: 40px;
+    }
+
+    .nav-button:hover {
+      background-color: rgb(86, 174, 87);
+      color: white;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #map {
+      height: 300px;
+      margin-top: 20px;
+      border: 2px solid #aaa;
+    }
+
+    .success-message {
+      text-align: center;
+      color: green;
+      margin-top: 20px;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-header">
+    <span>Report Bin Issue</span>
+    <button class="nav-button" onclick="location.href='homepage.html'">Back to Home</button>
+  </div>
+
+  <form id="issueForm">
+    <label>Sector:</label>
+    <input type="text" id="sector" readonly required />
+
+    <label>Dustbin Number:</label>
+    <input type="text" id="binNumber" readonly required />
+
+    <label>Issue Type:</label>
+    <select id="issueType" required>
+      <option value="">Select Issue</option>
+      <option value="Overflowing">Overflowing</option>
+      <option value="Damaged">Damaged</option>
+      <option value="Missing">Missing</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label>Description:</label>
+    <textarea id="description" rows="4" required></textarea>
+
+    <label>Select Bin from Map:</label>
+    <div class="note">Click a bin marker below to select it.</div>
+    <div id="map"></div>
+    <input type="hidden" id="lat">
+    <input type="hidden" id="lng">
+
+    <button type="submit">Submit Report</button>
+  </form>
+
+  <div class="success-message" id="successMsg"></div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKv2Sfpq_tgDSf0GqDGxlFaqcoBgKZ0Ew",
+      authDomain: "dustbin-survey.firebaseapp.com",
+      projectId: "dustbin-survey"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const map = L.map('map').setView([25.2749, 83.0011], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 20
+    }).addTo(map);
+
+    const binIcon = L.icon({
+      iconUrl: 'bin-marker.png',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -40]
+    });
+
+    let selectedMarker = null;
+
+    db.collection("dustbin").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const bin = doc.data();
+        const lat = bin["Coordinates"]?.Y;
+        const lng = bin["Coordinates"]?.X;
+
+        if (lat && lng) {
+          const marker = L.marker([lat, lng], { icon: binIcon }).addTo(map);
+          marker.bindPopup(`Dustbin #${bin["Dustbin Number"]} - Click to select`);
+
+          marker.on('click', () => {
+            document.getElementById("binNumber").value = bin["Dustbin Number"] || "";
+            document.getElementById("sector").value = bin["Sector"] || "";
+            document.getElementById("lat").value = lat;
+            document.getElementById("lng").value = lng;
+
+            if (selectedMarker) {
+              selectedMarker.setOpacity(1);
+            }
+            selectedMarker = marker;
+            marker.setOpacity(0.5); // highlight selected marker
+          });
+        }
+      });
+    });
+
+    document.getElementById("issueForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const sector = document.getElementById("sector").value;
+      const binNumber = document.getElementById("binNumber").value;
+      const issueType = document.getElementById("issueType").value;
+      const description = document.getElementById("description").value;
+      const lat = document.getElementById("lat").value;
+      const lng = document.getElementById("lng").value;
+
+      if (!lat || !lng || !binNumber) {
+        alert("Please select a dustbin from the map first.");
+        return;
+      }
+
+      try {
+        await db.collection("bin_issues").add({
+          sector,
+          binNumber,
+          issueType,
+          description,
+          location: new firebase.firestore.GeoPoint(parseFloat(lat), parseFloat(lng)),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        document.getElementById("issueForm").reset();
+        document.getElementById("successMsg").textContent = "Issue reported successfully!";
+        if (selectedMarker) selectedMarker.setOpacity(1);
+        selectedMarker = null;
+
+      } catch (err) {
+        console.error("Error saving issue:", err);
+        alert("Failed to report issue. Check console.");
+      }
+    });
+  </script>
+
+</body>
+</html>

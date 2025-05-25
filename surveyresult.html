@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Survey Result Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Chart.js + Firebase -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <style>
+    body {
+      padding: 20px;
+      text-align: center;
+      padding-top: 100px;
+      font-family: Arial, sans-serif;
+    }
+
+    .dashboard-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgb(193, 225, 193);
+      color: black;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      font-size: 30px;
+      font-weight: bold;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-button {
+      padding: 6px 14px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: transparent;
+      border: 2px solid black;
+      color: black;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      margin-right: 40px;
+    }
+
+    .nav-button:hover {
+      background-color: rgb(86, 174, 87);
+      color: white;
+    }
+
+    canvas {
+      max-width: 600px;
+      margin: 40px auto;
+      display: block;
+      height: 400px;
+    }
+
+    .chart-conclusion {
+      max-width: 700px;
+      margin: 30px auto;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
+      text-align: justify;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-header">
+    <span>Survey Result Dashboard</span>
+    <button class="nav-button" onclick="location.href='homepage.html'">Back to Home</button>
+  </div>
+
+  <h2>Sector-wise Distribution of Dustbins</h2>
+  <canvas id="sectorChart"></canvas>
+  <p class="chart-conclusion" id="chartConclusion"></p>
+
+  <h3>Gate Access Distribution</h3>
+  <canvas id="gateChart"></canvas>
+
+  <h3>Quality Distribution</h3>
+  <canvas id="qualityChart"></canvas>
+
+  <h3>Size Distribution</h3>
+  <canvas id="sizeChart"></canvas>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKv2Sfpq_tgDSf0GqDGxlFaqcoBgKZ0Ew",
+      authDomain: "dustbin-survey.firebaseapp.com",
+      projectId: "dustbin-survey"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    db.collection("dustbin").get().then((querySnapshot) => {
+      const sectorCounts = { A: 0, B: 0, C: 0, D: 0 };
+      let gateYes = 0;
+      let gateNo = 0;
+
+      const qualityCounts = { Dry: 4, Wet: 0, Mixed: 13 };
+      const sizeCounts = {
+        "Very Small": 1,
+        "Small": 6,
+        "Medium": 3,
+        "Large": 7,
+        "Very Large": 0
+      };
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        const sector = data["Sector"];
+        const gate = data["Gate (Yes/ No)"];
+        const quality = data["Quality (Dry/ Wet/ Mixed)"];
+        const size = data["Size (Ver Small/ Small/ Medium/ Large/ very large)"];
+
+        if (sectorCounts[sector] !== undefined) sectorCounts[sector]++;
+        if (gate === true || gate === "true") gateYes++;
+        else if (gate === false || gate === "false") gateNo++;
+
+        if (qualityCounts[quality] !== undefined) qualityCounts[quality]++;
+        if (sizeCounts[size] !== undefined) sizeCounts[size]++;
+      });
+
+      // Sector Chart
+      const sectorCtx = document.getElementById('sectorChart').getContext('2d');
+      new Chart(sectorCtx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(sectorCounts),
+          datasets: [{
+            label: 'Number of Bins',
+            data: Object.values(sectorCounts),
+            backgroundColor: ['#c3b1e1','#a7c7e7','#f8c8dc','#faa0a0']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { precision: 0 } }
+          }
+        }
+      });
+
+      // Conclusion Text
+      const maxSector = Object.entries(sectorCounts).reduce((a, b) => b[1] > a[1] ? b : a);
+      const minSectors = Object.entries(sectorCounts)
+        .filter(([_, v]) => v > 0 && v < maxSector[1])
+        .map(([k]) => `Sector ${k}`)
+        .join(', ');
+
+      let conclusion = `Sector ${maxSector[0]} has the highest number of dustbins (${maxSector[1]} bins).`;
+      if (minSectors) {
+        conclusion += ` Meanwhile, ${minSectors} have fewer bins, which may require redistribution.`;
+      }
+      document.getElementById("chartConclusion").textContent = conclusion;
+
+      // Gate Pie Chart
+      const gateCtx = document.getElementById('gateChart').getContext('2d');
+      new Chart(gateCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Gate Access: Yes', 'Gate Access: No'],
+          datasets: [{
+            data: [gateYes, gateNo],
+            backgroundColor: ['#66bb6a', '#ef5350']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+
+      // Quality Chart
+      const qualityCtx = document.getElementById('qualityChart').getContext('2d');
+      new Chart(qualityCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Dry', 'Wet', 'Mixed'],
+          datasets: [{
+            label: 'Count',
+            data: Object.values(qualityCounts),
+            backgroundColor: ['#42a5f5', '#66bb6a', '#ffa726']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: {
+              display: true,
+              text: 'Quality Type Distribution'
+            }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+
+      // Size Chart
+      const sizeCtx = document.getElementById('sizeChart').getContext('2d');
+      new Chart(sizeCtx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(sizeCounts),
+          datasets: [{
+            label: 'Count',
+            data: Object.values(sizeCounts),
+            backgroundColor: ['#8e24aa','#5e35b1','#3949ab','#1e88e5','#039be5']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: {
+              display: true,
+              text: 'Size Type Distribution'
+            }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+
+    }).catch(err => {
+      console.error("Error loading charts:", err);
+    });
+  </script>
+
+</body>
+</html>

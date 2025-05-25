@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+ <head>
+  <meta charset="UTF-8">                         
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title> Dustbin Waste Management</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    
+   
+  </style>
+ </head>
+
+  <body>
+    <div class="header">
+      <div class="left-text">
+      <p><strong>DUSTBIN MANAGEMENT WEB APP</strong></P> 
+    </div>
+
+     
+
+  <!-- Navigation Links -->
+    <div class="nav-links">                   <a href="homepage.html">Home </a>
+    <a href="#content">About </a>
+    <a href="#services">Services </a>
+    <a href="photogallery.html">Photo Gallery</a>
+    <button onclick="location.href='adminlogin.html'" class="admin-button">Admin Login</button>
+
+    </div>
+  </div>
+
+  
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1>Efficient Waste Management</h1>
+        <p>Revolutionizing Dustbin Solutions</p>
+      </div>
+      <div class="scroll-down">
+        <a href="#content">&#8595;</a> <!-- Downward arrow symbol -->
+      </div>
+    </div>
+
+    
+    <!-- MAIN CONTENT SECTION -->
+<div id="content" class="content-section">
+  <div class="content-row">
+    <!-- Left Side Text -->
+    <div class="content-text">
+      <h2 id="about">About Our Project</h2>
+      <p>Our Dustbin Management Web App provides real-time tracking, reporting dustbins inside our college campus and also provide waste reduction tips.
+      </p>
+      <p>It promotes cleaner and smarter cities and  also provide a survey result dashboard that contains result of solid waste survey inside campus in various chart form. </p>
+
+      <p>By involving users directly in waste reporting, this system enables community-driven environmental improvement and urban cleanliness.</p>
+    </div>
+
+    <!-- Right Side Image -->
+    <div class="content-image">
+      <img src="Screenshot_26-4-2025_112849_in.pinterest.com.jpeg" alt="Dustbin Management" />
+    </div>
+  </div>
+</div>
+
+
+<div id="services"class="card-container">
+  
+  <!-- map Card -->
+  <a href="map.html" class="card">
+    <img src="map.jpg" alt="map" class="card-img">
+    <h3>Interactive map integration</h3>
+    <p>Experience a dynamic waste bin map at your fingertips.</p>
+  </a>
+
+  <!-- bin issue report Card -->
+  <a href="binissue.html" class="card">
+    <img src="feedbackform.jpg" alt="binissue" class="card-img">
+    <h3>Bin issue reporting</h3>
+    <p>Easily report issues with waste bins in your area.</p>
+  </a>
+
+  <!-- survey result Card -->
+  <a href="surveyresult.html" class="card">
+    <img src="surveyresult.jpg" alt="surveyresult" class="card-img">
+    <h3>Survey result dashboard</h3>
+    <p>Visualize waste management data through engaging charts.</p>
+  </a>
+
+</div>
+  
+<!-- Tips Carousel Section -->
+<section class="tips-carousel">
+  <h2 style="text-align:center; margin-bottom: 20px;">Waste Reduction Tips</h2>
+  
+  <div class="carousel-wrapper">
+    <button class="arrow left" onclick="prevSlide()">&#8592;</button>
+    
+    <div class="carousel-box">
+      <div class="carousel-slide active">
+        <div class="tip-text">
+          <h3>Tip 1: Segregate Waste</h3>
+          <p>Always separate dry and wet waste to enhance recycling efficiency.</p>
+        </div>
+        <div class="tip-image">
+          <img src="tip1.jpg" alt="Segregate Waste">
+        </div>
+      </div>
+
+      <div class="carousel-slide">
+        <div class="tip-text">
+          <h3>Tip 2: Reduce Plastic Use</h3>
+          <p>Opt for reusable bags and containers to minimize plastic waste.</p>
+        </div>
+        <div class="tip-image">
+          <img src="tip3.jpg" alt="Reduce Plastic Use">
+        </div>
+      </div>
+
+      <div class="carousel-slide">
+        <div class="tip-text">
+          <h3>Tip 3: Compost Organic Waste</h3>
+          <p>Composting kitchen scraps reduces landfill and enriches soil.</p>
+        </div>
+        <div class="tip-image">
+          <img src="tip2.jpg" alt="Compost Organic Waste">
+        </div>
+      </div>
+
+      <div class="carousel-slide">
+        <div class="tip-text">
+          <h3>Tip 4: Educate Others</h3>
+          <p>Share knowledge about waste management to promote community involvement.</p>
+        </div>
+        <div class="tip-image">
+          <img src="tip4.jpg" alt="Educate Others">
+        </div>
+      </div>
+    </div>
+
+    <button class="arrow right" onclick="nextSlide()">&#8594;</button>
+  </div>
+</section>
+<!-- Contact Us Section -->
+<section id="contact" style="background-color: #f7f2dd; padding: 50px 20px; text-align: center;">
+  <h2 style="font-size: 32px; margin-bottom: 10px;">Contact Us</h2>
+  <p style="margin-bottom: 30px;">We'd love to hear your suggestions or queries regarding the Dustbin Management System.</p>
+
+  <form style="max-width: 600px; margin: 0 auto; text-align: left;">
+    <label for="name" style="font-weight: bold;">Name:</label><br>
+    <input type="text" id="name" name="name" required
+           style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;"><br>
+
+    <label for="email" style="font-weight: bold;">Email:</label><br>
+    <input type="email" id="email" name="email" required
+           style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;"><br>
+
+    <label for="message" style="font-weight: bold;">Message:</label><br>
+    <textarea id="message" name="message" rows="5" required
+              style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;"></textarea><br>
+
+    <button type="submit"
+            style="background-color: #4CAF50; color: white; padding: 10px 20px;
+                   border: none; border-radius: 4px; cursor: pointer;">Send Message</button>
+  </form>
+
+  <p style="margin-top: 20px; font-size: 14px; color: #555;">
+    📧 Email: support@dustbin-app.com | 📞 Phone: +91-9876543210
+  </p>
+</section>
+
+<script>
+  const tips = document.querySelectorAll('.carousel-slide');
+  let current = 0;
+
+  function showSlide(index) {
+    tips.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  function nextSlide() {
+    current = (current + 1) % tips.length;
+    showSlide(current);
+  }
+
+  function prevSlide() {
+    current = (current - 1 + tips.length) % tips.length;
+    showSlide(current);
+  }
+
+  // Auto slide (optional)
+  setInterval(nextSlide, 6000);
+
+  // Init first slide
+  showSlide(current);
+</script>
+
+</body>
+</html>

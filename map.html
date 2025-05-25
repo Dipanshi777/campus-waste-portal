@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dustbin Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      padding-top: 100px; /* space for fixed header */
+    }
+
+    .dashboard-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgb(193, 225, 193);
+      color: black;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      font-size: 30px;
+      font-weight: bold;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-button {
+      padding: 6px 14px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: transparent;
+      border: 2px solid black;
+      color: black;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      margin-right: 40px;
+    }
+
+    .nav-button:hover {
+      background-color: rgb(86, 174, 87);
+      color: white;
+    }
+
+    #map {
+      height: calc(100vh - 100px); /* Full screen minus header */
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-header">
+    <span>Dustbin Map</span>
+    <button class="nav-button" onclick="location.href='homepage.html'">Back to Home</button>
+  </div>
+
+  <div id="map"></div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKv2Sfpq_tgDSf0GqDGxlFaqcoBgKZ0Ew",
+      authDomain: "dustbin-survey.firebaseapp.com",
+      projectId: "dustbin-survey",
+      storageBucket: "dustbin-survey.appspot.com",
+      messagingSenderId: "196463321864",
+      appId: "1:196463321864:web:9c5b8f9748a02fb58802bd"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const map = L.map('map').setView([25.2749, 83.0011], 16);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 20
+    }).addTo(map);
+
+    const binIcon = L.icon({
+      iconUrl: 'bin-marker.png',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -40]
+    });
+
+    db.collection("dustbin").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const bin = doc.data();
+        const lat = bin["Coordinates"]?.Y;
+        const lng = bin["Coordinates"]?.X;
+
+        if (lat && lng) {
+          L.marker([lat, lng], { icon: binIcon }).addTo(map)
+            .bindPopup(`
+              <strong>Dustbin #${bin["Dustbin Number"]}</strong><br>
+              <b>Photo ID:</b> ${bin["Photo ID"]}<br>
+              <b>Sector:</b> ${bin["Sector"]}<br>
+              <b>Location:</b> ${bin["Nearest Location/ Nomenclature"]}<br>
+              <b>Gate Access:</b> ${bin["Gate (Yes/ No)"] ? 'Yes' : 'No'}<br>
+              <b>Portable/Fixed:</b> ${bin["Portable/ Fixed"]}<br>
+              <b>Size:</b> ${bin["Size (Very Small/ Small/ Medium/ Large/ very large)"]}<br>
+              <b>Accessibility:</b> ${bin["Accessibility (Good/ Bad)"]}<br>
+              <b>Quality:</b> ${bin["Quality (Dry/ Wet/ Mixed)"]}<br>
+              <b>Condition:</b> ${bin["Condition of Site(Okay/ Little Damage/ Severly Damage)"]}<br>
+            `);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
