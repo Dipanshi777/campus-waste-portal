@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dustbin Management Web App
 
 A web-based platform to visualize, report, and analyze waste bin distribution and conditions across a campus or locality. Built with HTML, CSS, JavaScript, Leaflet.js, Firebase, and Chart.js.
@@ -52,3 +53,6 @@ Email: mauryadipanshi13@gmail.com
 
 
 
+=======
+# campus-waste-portal
+>>>>>>> 2e8bd39de65ad4dc7fc2e028528019c74b927ac1
